@@ -4,7 +4,8 @@
   "description": "",
   "main": "node index.js",
   "scripts": {
-    "start": "node index.js"
+    "start": "node index.js",
+    "build": "npm run start"
   },
   "keywords": [],
   "author": "Debopam Gupta",

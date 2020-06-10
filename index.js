@@ -21,14 +21,14 @@ client.once("ready", () => {
 });
 
 client.on("message", async (msg) => {
+  if (!msg.content.startsWith("!") || msg.author.bot) return;
+
   if (
     (msg.channel.id === SclChannel && msg.guild.id === SclGuild) ||
     (msg.channel.id === EdutipsChannel && msg.guild.id === EdutipsGuild) ||
     (msg.channel.id === TechnicalChannel && msg.guild.id === TechnicalGuild)
   ) {
-    let regex = /^!meme/i;
-
-    if (regex.exec(msg.content)) {
+    if (msg.content === `!meme`) {
       const response = await fetch("https://www.reddit.com/r/memes/.json");
       const json = await response.json();
       const memeIndex = getRandomInt(1, json.data.dist);
@@ -36,6 +36,19 @@ client.on("message", async (msg) => {
       const memeTitle = json.data.children[memeIndex].data.title;
       await msg.channel.send(memeTitle);
       await msg.channel.send(memeUrl);
+    }
+
+    if (msg.content === `!user-info` || msg.content === `!userinfo`) {
+      const { username, discriminator, id, bot } = msg.author;
+      msg.channel.send(
+        `👤 Your username: **${username}**\n#️⃣ Your Tag: **${discriminator}** \n💳 Your ID: **${id}**\n🤖 Is a BOT: **${bot}**`
+      );
+    }
+
+    if (msg.content === "!help" || msg.content === "!halp") {
+      msg.channel.send(
+        `👋🤖 Hello I am a bot! \n Some commands of yours which i can follow are \n \`!meme\` => Get a random meme from reddit \n \`!user-info\` **OR** \`!userinfo\` => Get info about the message author. `
+      );
     }
   }
 });

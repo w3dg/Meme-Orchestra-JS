@@ -3,6 +3,13 @@ const fetch = require("node-fetch");
 const Discord = require("discord.js");
 const client = new Discord.Client();
 
+const SclGuild = "442723788732497936";
+const SclChannel = "559781407753240588";
+const EdutipsChannel = "704635164386525235";
+const EdutipsGuild = "613691957142880256";
+const TechnicalGuild = "575045205275705354";
+const TechnicalChannel = "577091481844580372";
+
 function getRandomInt(min, max) {
   min = Math.ceil(min);
   max = Math.floor(max);
@@ -14,12 +21,10 @@ client.once("ready", () => {
 });
 
 client.on("message", async (msg) => {
-  // for bot spam channel only and danky memes
   if (
-    (msg.channel.id === "559781407753240588" &&
-      msg.guild.id === "442723788732497936") ||
-    (msg.channel.id === "704635164386525235" &&
-      msg.guild.id === "613691957142880256")
+    (msg.channel.id === SclChannel && msg.guild.id === SclGuild) ||
+    (msg.channel.id === EdutipsChannel && msg.guild.id === EdutipsGuild) ||
+    (msg.channel.id === TechnicalChannel && msg.guild.id === TechnicalGuild)
   ) {
     let regex = /^!meme/i;
 

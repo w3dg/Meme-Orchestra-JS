@@ -29,6 +29,7 @@ client.on("message", async (msg) => {
     (msg.channel.id === TechnicalChannel && msg.guild.id === TechnicalGuild)
   ) {
     if (msg.content === `!meme`) {
+      await msg.react("🤣");
       const response = await fetch("https://www.reddit.com/r/memes/.json");
       const json = await response.json();
       const memeIndex = getRandomInt(1, json.data.dist);
@@ -39,6 +40,7 @@ client.on("message", async (msg) => {
     }
 
     if (msg.content === `!user-info` || msg.content === `!userinfo`) {
+      await msg.react("😎");
       const { username, discriminator, id, bot } = msg.author;
       msg.channel.send(
         `👤 Your username: **${username}**\n#️⃣ Your Tag: **${discriminator}** \n💳 Your ID: **${id}**\n🤖 Is a BOT: **${bot}**`
@@ -47,7 +49,15 @@ client.on("message", async (msg) => {
 
     if (msg.content === "!help" || msg.content === "!halp") {
       msg.channel.send(
-        `👋🤖 Hello I am a bot! \n Some commands of yours which i can follow are \n \`!meme\` => Get a random meme from reddit \n \`!user-info\` **OR** \`!userinfo\` => Get info about the message author. `
+        `👋🤖 Hello I am a bot! \n Some commands of yours which i can follow are \n \`!meme\` => Get a random meme from reddit😂 \n \`!user-info\` **OR** \`!userinfo\` => Get info about the message author.🤵 \n \`!help\` **OR** \`!halp\` => Display this help message.📜`
+      );
+      await msg.react("🙋‍♂️");
+    }
+
+    if (msg.content === "!hello" || msg.content === "!👋") {
+      await msg.react("👋");
+      msg.channel.send(
+        `Hi there! This is Meme-Generator-Bot which is being extended to make other features/commands as well`
       );
     }
   }

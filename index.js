@@ -1,8 +1,9 @@
 require("dotenv").config();
 const fetch = require("node-fetch");
-const Discord = require("discord.js");
-const client = new Discord.Client();
+const { Client, MessageEmbed } = require("discord.js");
+const client = new Client();
 
+// specific channel ids
 const SclGuild = "442723788732497936";
 const SclChannel = "559781407753240588";
 const EdutipsChannel = "704635164386525235";
@@ -28,6 +29,7 @@ client.on("message", async (msg) => {
     (msg.channel.id === EdutipsChannel && msg.guild.id === EdutipsGuild) ||
     (msg.channel.id === TechnicalChannel && msg.guild.id === TechnicalGuild)
   ) {
+    // Meme Handler
     if (msg.content === `!meme`) {
       await msg.react("🤣");
       const response = await fetch("https://www.reddit.com/r/memes/.json");
@@ -35,29 +37,88 @@ client.on("message", async (msg) => {
       const memeIndex = getRandomInt(1, json.data.dist);
       const memeUrl = json.data.children[memeIndex].data.url;
       const memeTitle = json.data.children[memeIndex].data.title;
-      await msg.channel.send(memeTitle);
-      await msg.channel.send(memeUrl);
+
+      const MemeEmbed = new MessageEmbed()
+        .setTitle("Meme")
+        .setColor("#ff9966")
+        .addField("Title", memeTitle, true)
+        .setImage(memeUrl);
+
+      await msg.channel.send(MemeEmbed);
     }
 
+    // User Info Handler
     if (msg.content === `!user-info` || msg.content === `!userinfo`) {
       await msg.react("😎");
-      const { username, discriminator, id, bot } = msg.author;
-      msg.channel.send(
-        `👤 Your username: **${username}**\n#️⃣ Your Tag: **${discriminator}** \n💳 Your ID: **${id}**\n🤖 Is a BOT: **${bot}**`
-      );
+      const status = {
+        online: "🟢 User is online!",
+        idle: "🟡 User is idle, probably drinking a cup of tea",
+        offline: "⚫ User is offline, probably sleeping ",
+        dnd: "🔴 User doesn't want to be disturbed right now",
+      };
+
+      const userInfoEmbed = new MessageEmbed()
+        .setColor("#ff9966")
+        .setTitle("User Info")
+        .setAuthor(msg.author.username)
+        .setThumbnail(msg.author.avatarURL("PNG"))
+        .addFields(
+          {
+            name: "👤 Username:",
+            value: msg.author.username,
+          },
+          {
+            name: "#️⃣ Tag:",
+            value: msg.author.tag,
+          },
+          {
+            name: "💳 ID:",
+            value: msg.author.id,
+          },
+          {
+            name: "🤖 Is a Bot? ",
+            value: msg.author.bot ? "Yes" : "No",
+          },
+          {
+            name: "🔰 Presence: ",
+            value: status[msg.author.presence.status],
+          },
+          {
+            name: "🎮 Is playing a game?",
+            value: "Now Playing 👉" + msg.author.presence.activities,
+          }
+        );
+      await msg.channel.send(userInfoEmbed);
     }
 
+    // Help Handler
     if (msg.content === "!help" || msg.content === "!halp") {
-      msg.channel.send(
-        `👋🤖 Hello I am a bot! \n Some commands of yours which i can follow are \n \`!meme\` => Get a random meme from reddit😂 \n \`!user-info\` **OR** \`!userinfo\` => Get info about the message author.🤵 \n \`!help\` **OR** \`!halp\` => Display this help message.📜`
-      );
+      const HelpEmbed = new MessageEmbed()
+        .setColor("#ff9966")
+        .setTitle("Help Message, Some of the commands you can use are")
+        .addFields(
+          {
+            name: "!meme",
+            value: "Get a random meme from reddit😂",
+          },
+          {
+            name: "!userinfo or !user-info",
+            value: "Get info about the message author.🤵",
+          },
+          {
+            name: "!help or !halp",
+            value: "Display this help message.📜",
+          }
+        );
+      await msg.channel.send(HelpEmbed);
       await msg.react("🙋‍♂️");
     }
 
-    if (msg.content === "!hello" || msg.content === "!👋") {
+    // Welcome Handler
+    if (msg.content === "!hello") {
       await msg.react("👋");
-      msg.channel.send(
-        `Hi there! This is Meme-Generator-Bot which is being extended to make other features/commands as well`
+      await msg.channel.send(
+        `Hi there! This is Meme-Generator-Bot. Primarily i can send you memes but if you want something more, type \`!help\``
       );
     }
   }

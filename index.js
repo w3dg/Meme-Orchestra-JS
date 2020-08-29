@@ -10,6 +10,8 @@ const EdutipsChannel = "704635164386525235";
 const EdutipsGuild = "613691957142880256";
 const TechnicalGuild = "575045205275705354";
 const TechnicalChannel = "577091481844580372";
+const UYSTGuild = "720175341217513524";
+const UYSTGeneralChannel = "720186552122212379";
 
 function getRandomInt(min, max) {
   min = Math.ceil(min);
@@ -21,13 +23,14 @@ client.once("ready", () => {
   console.log("BEEP BOOP ! Ready!");
 });
 
-client.on("message", async (msg) => {
+client.on("message", async msg => {
   if (!msg.content.startsWith("!") || msg.author.bot) return;
 
   if (
     (msg.channel.id === SclChannel && msg.guild.id === SclGuild) ||
     (msg.channel.id === EdutipsChannel && msg.guild.id === EdutipsGuild) ||
-    (msg.channel.id === TechnicalChannel && msg.guild.id === TechnicalGuild)
+    (msg.channel.id === TechnicalChannel && msg.guild.id === TechnicalGuild) ||
+    (msg.channel.id === UYSTGeneralChannel && msg.guild.id === UYSTGuild)
   ) {
     // Meme Handler
     if (msg.content === `!meme`) {
@@ -54,7 +57,7 @@ client.on("message", async (msg) => {
         online: "🟢 User is online!",
         idle: "🟡 User is idle, probably drinking a cup of tea",
         offline: "⚫ User is offline, probably sleeping ",
-        dnd: "🔴 User doesn't want to be disturbed right now",
+        dnd: "🔴 User doesn't want to be disturbed right now"
       };
 
       const userInfoEmbed = new MessageEmbed()
@@ -65,27 +68,27 @@ client.on("message", async (msg) => {
         .addFields(
           {
             name: "👤 Username:",
-            value: msg.author.username,
+            value: msg.author.username
           },
           {
             name: "#️⃣ Tag:",
-            value: msg.author.tag,
+            value: msg.author.tag
           },
           {
             name: "💳 ID:",
-            value: msg.author.id,
+            value: msg.author.id
           },
           {
             name: "🤖 Is a Bot? ",
-            value: msg.author.bot ? "Yes" : "No",
+            value: msg.author.bot ? "Yes" : "No"
           },
           {
             name: "🔰 Presence: ",
-            value: status[msg.author.presence.status],
+            value: status[msg.author.presence.status]
           },
           {
             name: "🎮 Is playing a game?",
-            value: "Now Playing 👉" + msg.author.presence.activities,
+            value: "Now Playing 👉" + msg.author.presence.activities
           }
         );
       await msg.channel.send(userInfoEmbed);
@@ -99,15 +102,15 @@ client.on("message", async (msg) => {
         .addFields(
           {
             name: "!meme",
-            value: "Get a random meme from reddit😂",
+            value: "Get a random meme from reddit😂"
           },
           {
             name: "!userinfo or !user-info",
-            value: "Get info about the message author.🤵",
+            value: "Get info about the message author.🤵"
           },
           {
             name: "!help or !halp",
-            value: "Display this help message.📜",
+            value: "Display this help message.📜"
           }
         );
       await msg.channel.send(HelpEmbed);

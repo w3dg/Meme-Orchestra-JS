@@ -80,8 +80,13 @@ client.on("message", async (msg) => {
               value: status[msg.author.presence.status],
             },
             {
-              name: "🎮 Is playing a game?",
-              value: "Now Playing 👉" + msg.author.presence.activities,
+              name: "🎮 Activity: ",
+              value:
+                msg.author.presence.activities.length !== 0
+                  ? msg.author.presence.activities[0].type +
+                    " " +
+                    msg.author.presence.activities[0].name
+                  : "Nothing -_-",
             }
           );
         await msg.channel.send(userInfoEmbed);
@@ -114,13 +119,16 @@ client.on("message", async (msg) => {
               value: status[taggedUser.presence.status],
             },
             {
-              name: "🎮 Is playing a game?",
+              name: "🎮 Activity: ",
               value:
                 taggedUser.presence.activities.length !== 0
-                  ? "Now Playing 👉" + taggedUser.presence.activities
-                  : "Nope",
+                  ? taggedUser.presence.activities[0].type +
+                    " " +
+                    taggedUser.presence.activities[0].name
+                  : "Nothing -_-",
             }
           );
+
         await msg.channel.send(userInfoEmbed);
       }
     }
@@ -159,3 +167,12 @@ client.on("message", async (msg) => {
 });
 
 client.login(process.env.BOT_TOKEN);
+
+// Uncomment for hosting on Repl.it so that the request to keep it awake goes through and ahs 200 status code to continue
+
+// const http = require("http");
+// const server = http.createServer((req, res) => {
+//   res.writeHead(200);
+//   res.end("ok");
+// });
+// server.listen(3000);

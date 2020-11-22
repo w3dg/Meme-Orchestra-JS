@@ -3,8 +3,8 @@ const fetch = require("node-fetch");
 const { Client, MessageEmbed } = require("discord.js");
 const client = new Client();
 
-const ChannelID = process.env.CHANNEL_ID;
-const ServerID = process.env.SERVER_ID;
+const ChannelIDs = ["768017812844970014", "753989244015345726"];
+const ServerIDs = ["723994197002289242", "720175341217513524"];
 const prefix = "!";
 
 function getRandomInt(min, max) {
@@ -23,7 +23,7 @@ client.on("message", async (msg) => {
   const args = msg.content.slice(prefix.length).trim().split(" ");
   const command = args.shift().toLowerCase();
 
-  if (msg.channel.id === ChannelID && msg.guild.id === ServerID) {
+  if (ChannelIDs.includes(msg.channel.id) && ServerIDs.includes(msg.guild.id)) {
     // Meme Handler
     if (command === `meme`) {
       await msg.react("🤣");
@@ -168,8 +168,7 @@ client.on("message", async (msg) => {
 
 client.login(process.env.BOT_TOKEN);
 
-// Uncomment for hosting on Repl.it so that the request to keep it awake goes through and ahs 200 status code to continue
-
+// Uncomment for hosting on Repl.it so that the request to keep it awake goes through and ans 200 status code to continue
 // const http = require("http");
 // const server = http.createServer((req, res) => {
 //   res.writeHead(200);
